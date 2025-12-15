@@ -1,4 +1,8 @@
-export function RecordingScreen() {
+interface RecordingScreenProps {
+  onContainerClick: () => void;
+}
+
+export function RecordingScreen({ onContainerClick }: RecordingScreenProps) {
   return (
     <div className="content-stretch flex flex-col gap-[20px] items-start w-full" data-name="Body Content">
       {/* Recording Started Header */}
@@ -14,12 +18,16 @@ export function RecordingScreen() {
       </div>
 
       {/* Recording Container */}
-      <div className="basis-0 bg-[#f2f2f2] content-stretch flex grow items-center justify-center min-h-[600px] relative rounded-[8px] shrink-0 w-full" data-name="Recording Container">
+      <button
+        onClick={onContainerClick}
+        className="basis-0 bg-[#f2f2f2] content-stretch flex grow items-center justify-center min-h-[600px] relative rounded-[8px] shrink-0 w-full hover:bg-[#e8e8e8] transition-colors cursor-pointer"
+        data-name="Recording Container"
+      >
         <div aria-hidden="true" className="absolute border border-[#cccccc] border-solid inset-0 pointer-events-none rounded-[8px] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]" />
         <div className="flex flex-col font-['Raleway',sans-serif] font-semibold justify-center leading-[0] relative shrink-0 text-[#1c1c1e] text-[16px] text-center max-w-[296px]">
           <p className="leading-[normal]">Navigate and click through the website to see the steps here</p>
         </div>
-      </div>
+      </button>
     </div>
   );
 }
