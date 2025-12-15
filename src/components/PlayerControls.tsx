@@ -59,7 +59,7 @@ export function PlayerControls({ onSkipPrevious, onPlay, onSkipNext }: PlayerCon
         <div className="size-9">
           <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 36 36">
             <g clipPath="url(#clip0_skip_next)">
-              <path d={svgPathsDetail.p2d9db4e0} fill="hsl(var(--widget-icon-disabled))" />
+              <path d={svgPathsDetail.p2d9db4e0} fill="hsl(var(--widget-icon-primary))" />
             </g>
             <defs>
               <clipPath id="clip0_skip_next">

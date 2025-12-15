@@ -1,4 +1,5 @@
 import svgPathsNew from "../imports/svg-hfh3cd2q4z";
+import svgPathsFailed from "../imports/svg-onrwwfl8wg";
 import { IconButton } from "./IconButton";
 import { cn } from "../lib/cn";
 
@@ -18,7 +19,7 @@ export function Step({ title, delay, completed, failed, onEdit }: StepProps) {
   };
 
   return (
-    <div>
+    <div className="relative">
       <div className="content-stretch flex gap-[10px] h-[44px] items-center px-[10px] py-[10px]">
         {/* Check/Cancel Icon */}
         <div className="relative shrink-0 size-6">
@@ -58,7 +59,7 @@ export function Step({ title, delay, completed, failed, onEdit }: StepProps) {
         {/* Step Title */}
         <div className={cn(
           "flex flex-col font-['Raleway',sans-serif] font-semibold justify-center leading-[0] relative shrink-0 text-[20px] text-center text-nowrap",
-          "text-widget-text-primary"
+          "text-black"
         )}>
           <p className="leading-[normal] whitespace-pre">{title}</p>
         </div>
@@ -94,9 +95,27 @@ export function Step({ title, delay, completed, failed, onEdit }: StepProps) {
           </div>
           <div className={cn(
             "flex flex-col font-['Raleway',sans-serif] font-semibold justify-center leading-[0] text-[20px] text-center text-nowrap",
-            "text-widget-text-secondary"
+            "text-[#969696]"
           )}>
             <p className="leading-[normal] whitespace-pre">{delay} seconds delay</p>
+          </div>
+        </div>
+      )}
+      
+      {/* Failed step tooltip */}
+      {failed && (
+        <div className="relative ml-[36px] mt-1 mb-2 z-10">
+          {/* Arrow pointing up */}
+          <div className="absolute -top-[7px] left-[5px] w-[9.526px] h-[7.5px]">
+            <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 10 8">
+              <path d={svgPathsFailed.p4e54100} fill="white" />
+            </svg>
+          </div>
+          {/* Tooltip box */}
+          <div className="bg-white flex h-[30px] items-center px-[10px] py-[10px] rounded-[4px] w-fit border border-gray-200" style={{ boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.15)' }}>
+            <p className="font-['Montserrat',sans-serif] text-[16px] text-black whitespace-nowrap">
+              ! Unable to find
+            </p>
           </div>
         </div>
       )}

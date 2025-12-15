@@ -76,7 +76,7 @@ export function TitleBar({ title, onBack, onTitleChange, onShare, onDelete }: Ti
               autoFocus
               className={cn(
                 "w-full font-['Raleway',sans-serif] font-semibold text-[24px] bg-transparent outline-none",
-                "text-widget-text-primary"
+                "text-black"
               )}
             />
           </div>
@@ -99,7 +99,7 @@ export function TitleBar({ title, onBack, onTitleChange, onShare, onDelete }: Ti
       ) : (
         <h2 className={cn(
           "basis-0 font-['Raleway',sans-serif] font-semibold grow leading-[normal] min-h-px min-w-px relative shrink-0 text-[24px]",
-          "text-widget-text-primary"
+          "text-black"
         )}>
           {editedTitle}
         </h2>

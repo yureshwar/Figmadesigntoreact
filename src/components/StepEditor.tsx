@@ -25,6 +25,8 @@ export function StepEditor({ onClose, stepNumber, completedSteps = [], onSaveSte
   const [labels, setLabels] = useState([{ id: 1, value: "" }]);
   const [showSkipTooltip, setShowSkipTooltip] = useState(false);
   const [showPersonalTooltip, setShowPersonalTooltip] = useState(false);
+  const [skipDuringPlay, setSkipDuringPlay] = useState(false);
+  const [personalInformation, setPersonalInformation] = useState(false);
 
   const handleSaveHome = () => {
     setIsEditingHome(false);
@@ -171,10 +173,21 @@ export function StepEditor({ onClose, stepNumber, completedSteps = [], onSaveSte
           <div className="flex items-center gap-6 mb-5">
             {/* Skip during play */}
             <div className="flex items-center gap-1.5">
-              <div className="w-[22px] h-[22px] border-2 border-black rounded bg-white flex items-center justify-center shrink-0">
-                <div className="w-[2px] h-[2px]" />
-              </div>
-              <label className="font-['Jost',sans-serif] text-[16px] text-black leading-[1.5] whitespace-nowrap">
+              <button
+                onClick={() => setSkipDuringPlay(!skipDuringPlay)}
+                className="w-[22px] h-[22px] border-2 border-black rounded bg-white flex items-center justify-center shrink-0 hover:opacity-80 transition-opacity cursor-pointer"
+                aria-label="Toggle skip during play"
+              >
+                {skipDuringPlay && (
+                  <svg className="w-3 h-3" fill="none" viewBox="0 0 12 12">
+                    <path d="M2 6L4.5 8.5L10 3" stroke="black" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
+                  </svg>
+                )}
+              </button>
+              <label 
+                onClick={() => setSkipDuringPlay(!skipDuringPlay)}
+                className="font-['Jost',sans-serif] text-[16px] text-black leading-[1.5] whitespace-nowrap cursor-pointer"
+              >
                 Skip during play
               </label>
               <div className="relative">
@@ -204,10 +217,21 @@ export function StepEditor({ onClose, stepNumber, completedSteps = [], onSaveSte
 
             {/* Personal information */}
             <div className="flex items-center gap-1.5">
-              <div className="w-[22px] h-[22px] border-2 border-black rounded bg-white flex items-center justify-center shrink-0">
-                <div className="w-[2px] h-[2px]" />
-              </div>
-              <label className="font-['Jost',sans-serif] text-[16px] text-black leading-[1.5] whitespace-nowrap">
+              <button
+                onClick={() => setPersonalInformation(!personalInformation)}
+                className="w-[22px] h-[22px] border-2 border-black rounded bg-white flex items-center justify-center shrink-0 hover:opacity-80 transition-opacity cursor-pointer"
+                aria-label="Toggle personal information"
+              >
+                {personalInformation && (
+                  <svg className="w-3 h-3" fill="none" viewBox="0 0 12 12">
+                    <path d="M2 6L4.5 8.5L10 3" stroke="black" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
+                  </svg>
+                )}
+              </button>
+              <label 
+                onClick={() => setPersonalInformation(!personalInformation)}
+                className="font-['Jost',sans-serif] text-[16px] text-black leading-[1.5] whitespace-nowrap cursor-pointer"
+              >
                 Personal information
               </label>
               <div className="relative">

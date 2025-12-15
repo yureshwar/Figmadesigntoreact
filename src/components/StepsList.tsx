@@ -18,7 +18,7 @@ export function StepsList({ steps, onEditStep }: StepsListProps) {
     <div className="w-full flex flex-col">
       <h3 className={cn(
         "flex flex-col font-['Raleway',sans-serif] font-semibold h-[33px] justify-center leading-[0] text-[20px] mb-4",
-        "text-widget-text-primary"
+        "text-black"
       )}>
         <p className="leading-[normal]">Steps</p>
       </h3>
