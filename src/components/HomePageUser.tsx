@@ -5,8 +5,9 @@ import { StartRecording } from "./StartRecording";
 import { Countdown } from "./Countdown";
 import { RecordingScreen } from "./RecordingScreen";
 import { StepEditor } from "./StepEditor";
+import { SavingProgress } from "./SavingProgress";
 
-type RecordingState = 'idle' | 'start' | 'countdown' | 'recording' | 'stepEditor';
+type RecordingState = 'idle' | 'start' | 'countdown' | 'recording' | 'stepEditor' | 'saving';
 
 interface CompletedStep {
   number: number;
@@ -50,6 +51,25 @@ export default function HomePageUser() {
     // Or you can go back to recording: setRecordingState('recording');
   };
 
+  const handleFinalSave = () => {
+    // Trigger saving progress
+    setRecordingState('saving');
+  };
+
+  const handleCancel = () => {
+    // Navigate back to search results
+    setRecordingState('idle');
+    setCurrentStep(1);
+    setCompletedSteps([]);
+  };
+
+  const handleSavingComplete = () => {
+    // Reset to initial state
+    setRecordingState('idle');
+    setCurrentStep(1);
+    setCompletedSteps([]);
+  };
+
   // Countdown timer effect
   useEffect(() => {
     if (recordingState === 'countdown') {
@@ -80,6 +100,14 @@ export default function HomePageUser() {
           stepNumber={currentStep}
           completedSteps={completedSteps}
           onSaveStep={handleSaveStep}
+          onFinalSave={handleFinalSave}
+          onCancel={handleCancel}
+        />
+      )}
+      {recordingState === 'saving' && (
+        <SavingProgress 
+          totalSteps={completedSteps.length}
+          onComplete={handleSavingComplete}
         />
       )}
     </Layout>

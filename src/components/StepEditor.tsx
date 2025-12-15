@@ -8,9 +8,11 @@ interface StepEditorProps {
   stepNumber: number;
   completedSteps?: Array<{ number: number; title: string }>;
   onSaveStep?: (stepData: any) => void;
+  onFinalSave?: () => void;
+  onCancel?: () => void;
 }
 
-export function StepEditor({ onClose, stepNumber, completedSteps = [], onSaveStep }: StepEditorProps) {
+export function StepEditor({ onClose, stepNumber, completedSteps = [], onSaveStep, onFinalSave, onCancel }: StepEditorProps) {
   const [showPermissions, setShowPermissions] = useState(false);
   const [isDoctorChecked, setIsDoctorChecked] = useState(false);
   const [isEditingHome, setIsEditingHome] = useState(false);
@@ -322,7 +324,10 @@ export function StepEditor({ onClose, stepNumber, completedSteps = [], onSaveSte
 
           {/* Action Buttons */}
           <div className="flex gap-[10px] mb-3">
-            <button className="flex-1 bg-[#969696] h-[50px] rounded-[8px] font-['Raleway',sans-serif] text-[20px] text-white hover:opacity-90 transition-opacity leading-[normal]">
+            <button 
+              onClick={onCancel}
+              className="flex-1 bg-[#969696] h-[50px] rounded-[8px] font-['Raleway',sans-serif] text-[20px] text-white hover:opacity-90 transition-opacity leading-[normal]"
+            >
               Cancel
             </button>
             <button 
@@ -462,10 +467,16 @@ export function StepEditor({ onClose, stepNumber, completedSteps = [], onSaveSte
 
       {/* Bottom Action Buttons */}
       <div className="mt-4 flex gap-[10px]">
-        <button className="flex-1 bg-[#969696] h-[50px] rounded-[8px] font-['Raleway',sans-serif] text-[20px] text-white hover:opacity-90 transition-opacity leading-[normal]">
+        <button 
+          onClick={onCancel}
+          className="flex-1 bg-[#969696] h-[50px] rounded-[8px] font-['Raleway',sans-serif] text-[20px] text-white hover:opacity-90 transition-opacity leading-[normal]"
+        >
           Cancel
         </button>
-        <button className="flex-1 bg-black h-[50px] rounded-[8px] font-['Raleway',sans-serif] text-[20px] text-white hover:opacity-90 transition-opacity leading-[normal]">
+        <button 
+          onClick={onFinalSave}
+          className="flex-1 bg-black h-[50px] rounded-[8px] font-['Raleway',sans-serif] text-[20px] text-white hover:opacity-90 transition-opacity leading-[normal]"
+        >
           save
         </button>
       </div>
