@@ -1,5 +1,6 @@
 import svgPaths from "../imports/svg-hfh3cd2q4z";
 import { useState } from "react";
+import { cn } from "../lib/cn";
 
 interface ReportIssueDialogProps {
   onSubmit: (issueType: string, description: string) => void;
@@ -31,11 +32,19 @@ export function ReportIssueDialog({ onSubmit, onCancel }: ReportIssueDialogProps
       <div 
         className="fixed inset-0 bg-transparent z-40"
         onClick={onCancel}
+        aria-label="Close dialog"
       />
       
       {/* Dialog */}
-      <div className="absolute right-0 top-full mt-2 bg-white rounded-[4px] shadow-lg z-50 p-2 w-[208px]">
-        <p className="font-['Raleway',sans-serif] font-semibold text-[10px] text-black mb-2">
+      <div className={cn(
+        "absolute right-0 top-full mt-2 shadow-lg z-50 p-2 w-[208px]",
+        "bg-widget-dialog",
+        "rounded-widget-sm"
+      )}>
+        <p className={cn(
+          "font-['Raleway',sans-serif] font-semibold text-[10px] mb-2",
+          "text-widget-text-primary"
+        )}>
           Report Recording Issue
         </p>
         
@@ -46,21 +55,34 @@ export function ReportIssueDialog({ onSubmit, onCancel }: ReportIssueDialogProps
               e.stopPropagation();
               setShowDropdown(!showDropdown);
             }}
-            className="w-full bg-neutral-50 border border-[#dbdbdb] rounded-[2px] px-2 py-1 text-left relative"
+            className={cn(
+              "w-full px-2 py-1 text-left relative",
+              "bg-widget-input",
+              "border border-widget-input-border",
+              "rounded-widget-sm"
+            )}
           >
-            <p className="font-['Raleway',sans-serif] font-semibold text-[8px] text-[#8b8b8b]">
+            <p className={cn(
+              "font-['Raleway',sans-serif] font-semibold text-[8px]",
+              "text-widget-text-secondary"
+            )}>
               {issueType || "Select Issue Type"}
             </p>
             <div className="absolute right-2 top-1/2 -translate-y-1/2 w-2.5 h-[5px]">
               <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 10 5">
-                <path d="M0 0L5 5L10 0H0Z" fill="#B4B4B4" />
+                <path d="M0 0L5 5L10 0H0Z" fill="hsl(var(--widget-icon-secondary))" />
               </svg>
             </div>
           </button>
           
           {/* Dropdown Options */}
           {showDropdown && (
-            <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-[#dbdbdb] rounded-[2px] shadow-lg z-50 max-h-32 overflow-y-auto">
+            <div className={cn(
+              "absolute top-full left-0 right-0 mt-1 shadow-lg z-50 max-h-32 overflow-y-auto",
+              "bg-widget-dialog",
+              "border border-widget-input-border",
+              "rounded-widget-sm"
+            )}>
               {issueTypes.map((type) => (
                 <button
                   key={type}
@@ -68,9 +90,15 @@ export function ReportIssueDialog({ onSubmit, onCancel }: ReportIssueDialogProps
                     setIssueType(type);
                     setShowDropdown(false);
                   }}
-                  className="w-full px-2 py-1 text-left hover:bg-gray-100"
+                  className={cn(
+                    "w-full px-2 py-1 text-left transition-colors",
+                    "hover:bg-widget-input"
+                  )}
                 >
-                  <p className="font-['Raleway',sans-serif] font-semibold text-[8px] text-black">
+                  <p className={cn(
+                    "font-['Raleway',sans-serif] font-semibold text-[8px]",
+                    "text-widget-text-primary"
+                  )}>
                     {type}
                   </p>
                 </button>
@@ -84,22 +112,37 @@ export function ReportIssueDialog({ onSubmit, onCancel }: ReportIssueDialogProps
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           placeholder="Description"
-          className="w-full bg-neutral-50 border border-[#dbdbdb] rounded-[2px] px-2 py-1 font-['Raleway',sans-serif] font-semibold text-[8px] text-[#8b8b8b] placeholder:text-[#8b8b8b] resize-none h-[36px] mb-2"
+          className={cn(
+            "w-full px-2 py-1 font-['Raleway',sans-serif] font-semibold text-[8px] placeholder:text-widget-text-secondary resize-none h-[36px] mb-2",
+            "bg-widget-input",
+            "border border-widget-input-border",
+            "rounded-widget-sm"
+          )}
         />
         
         {/* Action Buttons */}
         <div className="flex gap-2 justify-end">
           <button
             onClick={onCancel}
-            className="bg-[#969696] rounded-[2px] px-4 py-1 hover:opacity-80 transition-opacity"
+            className={cn(
+              "px-4 py-1 transition-opacity",
+              "bg-widget-icon-secondary",
+              "rounded-widget-sm",
+              "hover:opacity-widget-hover"
+            )}
           >
-            <p className="font-['Raleway',sans-serif] font-semibold text-[10px] text-white">Cancel</p>
+            <p className="font-['Raleway',sans-serif] font-semibold text-[10px] text-widget-text-on-dark">Cancel</p>
           </button>
           <button
             onClick={handleSubmit}
-            className="bg-black rounded-[2px] px-4 py-1 hover:opacity-80 transition-opacity"
+            className={cn(
+              "px-4 py-1 transition-opacity",
+              "bg-widget-button-primary",
+              "rounded-widget-sm",
+              "hover:opacity-widget-hover"
+            )}
           >
-            <p className="font-['Raleway',sans-serif] font-semibold text-[10px] text-white">submit</p>
+            <p className="font-['Raleway',sans-serif] font-semibold text-[10px] text-widget-button-primary-text">submit</p>
           </button>
         </div>
         

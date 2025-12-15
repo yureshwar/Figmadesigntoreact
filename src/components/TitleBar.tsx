@@ -3,6 +3,8 @@ import svgPathsNew from "../imports/svg-hfh3cd2q4z";
 import { useState } from "react";
 import { ShareDialog } from "./ShareDialog";
 import { DeleteDialog } from "./DeleteDialog";
+import { IconButton } from "./IconButton";
+import { cn } from "../lib/cn";
 
 interface TitleBarProps {
   title: string;
@@ -40,20 +42,26 @@ export function TitleBar({ title, onBack, onTitleChange, onShare, onDelete }: Ti
   };
 
   return (
-    <div className="content-stretch flex gap-[10px] h-[44px] items-center px-0 py-[8px] w-full">
-      <button 
+    <div className="content-stretch flex gap-[10px] h-[44px] items-center px-0 py-2 w-full">
+      <IconButton 
         onClick={onBack}
-        className="relative shrink-0 size-[24px] hover:opacity-70 transition-opacity"
+        size="md"
         aria-label="Go back"
       >
         <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 24 24">
-          <path d={svgPathsDetail.p3b54f780} fill="black" />
+          <path d={svgPathsDetail.p3b54f780} fill="hsl(var(--widget-icon-primary))" />
         </svg>
-      </button>
+      </IconButton>
       
       {isEditingTitle ? (
         <div className="basis-0 grow min-w-0 relative flex items-center gap-2">
-          <div className="flex-1 bg-[#d9d9d9] border border-[#d2d2d2] border-solid rounded-[4px] shadow-[0px_2px_4px_0px_rgba(0,0,0,0.25)] h-[39px] flex items-center px-3 min-w-0">
+          <div className={cn(
+            "flex-1 border border-solid h-[39px] flex items-center px-3 min-w-0",
+            "bg-widget-input",
+            "border-widget-input-border",
+            "rounded-widget-sm",
+            "shadow-[0px_2px_4px_0px_var(--widget-input-shadow)]"
+          )}>
             <input
               type="text"
               value={editedTitle}
@@ -66,51 +74,58 @@ export function TitleBar({ title, onBack, onTitleChange, onShare, onDelete }: Ti
                 }
               }}
               autoFocus
-              className="w-full font-['Raleway',sans-serif] font-semibold text-[#1c1c1e] text-[24px] bg-transparent outline-none"
+              className={cn(
+                "w-full font-['Raleway',sans-serif] font-semibold text-[24px] bg-transparent outline-none",
+                "text-widget-text-primary"
+              )}
             />
           </div>
-          <button
+          <IconButton
             onClick={handleTitleSave}
-            className="shrink-0 hover:opacity-80 transition-opacity"
+            size="md"
             aria-label="Save title"
+            className="hover:opacity-80"
           >
             <div className="size-[22.4px]">
-              <div className="w-full h-full shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25),0px_-2px_2px_0px_rgba(0,0,0,0.25)]">
+              <div className="w-full h-full shadow-[0px_4px_4px_0px_hsl(var(--widget-input-shadow)),0px_-2px_2px_0px_hsl(var(--widget-input-shadow))]">
                 <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 22.4 24">
-                  <rect fill="black" height="24" rx="4" width="22.4" />
-                  <path d="M4.8 12L9 16.2L17.4 7.2" stroke="white" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.25" fill="none" />
+                  <rect fill="hsl(var(--widget-button-primary-bg))" height="24" rx="4" width="22.4" />
+                  <path d="M4.8 12L9 16.2L17.4 7.2" stroke="hsl(var(--widget-button-primary-text))" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.25" fill="none" />
                 </svg>
               </div>
             </div>
-          </button>
+          </IconButton>
         </div>
       ) : (
-        <h2 className="basis-0 font-['Raleway',sans-serif] font-semibold grow leading-[normal] min-h-px min-w-px relative shrink-0 text-[#1c1c1e] text-[24px]">
+        <h2 className={cn(
+          "basis-0 font-['Raleway',sans-serif] font-semibold grow leading-[normal] min-h-px min-w-px relative shrink-0 text-[24px]",
+          "text-widget-text-primary"
+        )}>
           {editedTitle}
         </h2>
       )}
       
       {!isEditingTitle && (
-        <button 
+        <IconButton 
           onClick={() => setIsEditingTitle(true)}
-          className="relative shrink-0 size-[24px] hover:opacity-70 transition-opacity"
+          size="md"
           aria-label="Edit title"
         >
           <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 24 24">
-            <path d={svgPathsNew.p157c33f0} fill="black" />
+            <path d={svgPathsNew.p157c33f0} fill="hsl(var(--widget-icon-primary))" />
           </svg>
-        </button>
+        </IconButton>
       )}
       
       <div className="relative">
-        <button 
+        <IconButton 
           onClick={handleDeleteClick}
-          className="relative shrink-0 size-[24px] hover:opacity-70 transition-opacity"
+          size="md"
           aria-label="Delete"
         >
           <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 24 24">
             <g clipPath="url(#clip0_delete)">
-              <path d={svgPathsNew.p2eacd800} fill="black" />
+              <path d={svgPathsNew.p2eacd800} fill="hsl(var(--widget-icon-primary))" />
             </g>
             <defs>
               <clipPath id="clip0_delete">
@@ -118,7 +133,7 @@ export function TitleBar({ title, onBack, onTitleChange, onShare, onDelete }: Ti
               </clipPath>
             </defs>
           </svg>
-        </button>
+        </IconButton>
         
         {showDeleteDialog && (
           <DeleteDialog 
@@ -129,15 +144,15 @@ export function TitleBar({ title, onBack, onTitleChange, onShare, onDelete }: Ti
       </div>
       
       <div className="relative">
-        <button 
+        <IconButton 
           onClick={handleShareClick}
-          className="relative shrink-0 size-[24px] hover:opacity-70 transition-opacity"
+          size="md"
           aria-label="Share"
         >
           <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 24 24">
-            <path d={svgPathsDetail.p378ed900} fill="black" />
+            <path d={svgPathsDetail.p378ed900} fill="hsl(var(--widget-icon-primary))" />
           </svg>
-        </button>
+        </IconButton>
         
         {showShareDialog && (
           <ShareDialog 

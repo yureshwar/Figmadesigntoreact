@@ -1,4 +1,5 @@
 import svgPathsDetail from "../imports/svg-0ikchrah8d";
+import { IconButton } from "./IconButton";
 
 interface PlayerControlsProps {
   onSkipPrevious?: () => void;
@@ -8,17 +9,17 @@ interface PlayerControlsProps {
 
 export function PlayerControls({ onSkipPrevious, onPlay, onSkipNext }: PlayerControlsProps) {
   return (
-    <div className="content-stretch flex gap-[10px] items-center px-0 py-[16px] rounded-[4px] w-full">
+    <div className="content-stretch flex gap-[10px] items-center px-0 py-4 rounded-[var(--widget-radius-sm)] w-full">
       {/* Skip Previous */}
-      <button 
+      <IconButton 
         onClick={onSkipPrevious}
-        className="shrink-0 hover:opacity-70 transition-opacity"
+        size="lg"
         aria-label="Skip previous"
       >
-        <div className="size-[36px]">
+        <div className="size-9">
           <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 36 36">
             <g clipPath="url(#clip0_skip_prev)">
-              <path d={svgPathsDetail.p1e9080} fill="#CCCCCC" />
+              <path d={svgPathsDetail.p1e9080} fill="hsl(var(--widget-icon-disabled))" />
             </g>
             <defs>
               <clipPath id="clip0_skip_prev">
@@ -27,18 +28,18 @@ export function PlayerControls({ onSkipPrevious, onPlay, onSkipNext }: PlayerCon
             </defs>
           </svg>
         </div>
-      </button>
+      </IconButton>
 
       {/* Play Button */}
-      <button 
+      <IconButton 
         onClick={onPlay}
-        className="shrink-0 hover:opacity-70 transition-opacity"
+        size="lg"
         aria-label="Play"
       >
         <div className="size-[38px]">
           <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 38 38">
             <g clipPath="url(#clip0_play_filled)">
-              <path d={svgPathsDetail.pb92c900} fill="black" />
+              <path d={svgPathsDetail.pb92c900} fill="hsl(var(--widget-icon-primary))" />
             </g>
             <defs>
               <clipPath id="clip0_play_filled">
@@ -47,18 +48,18 @@ export function PlayerControls({ onSkipPrevious, onPlay, onSkipNext }: PlayerCon
             </defs>
           </svg>
         </div>
-      </button>
+      </IconButton>
 
       {/* Skip Next */}
-      <button 
+      <IconButton 
         onClick={onSkipNext}
-        className="shrink-0 hover:opacity-70 transition-opacity"
+        size="lg"
         aria-label="Skip next"
       >
-        <div className="size-[36px]">
+        <div className="size-9">
           <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 36 36">
             <g clipPath="url(#clip0_skip_next)">
-              <path d={svgPathsDetail.p2d9db4e0} fill="#CCCCCC" />
+              <path d={svgPathsDetail.p2d9db4e0} fill="hsl(var(--widget-icon-disabled))" />
             </g>
             <defs>
               <clipPath id="clip0_skip_next">
@@ -67,7 +68,7 @@ export function PlayerControls({ onSkipPrevious, onPlay, onSkipNext }: PlayerCon
             </defs>
           </svg>
         </div>
-      </button>
+      </IconButton>
     </div>
   );
 }

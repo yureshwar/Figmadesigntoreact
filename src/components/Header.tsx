@@ -2,7 +2,11 @@ import svgPaths from "../imports/svg-s04gq19zek";
 import { useState } from "react";
 import { LanguageSelector } from "./LanguageSelector";
 
-export function Header() {
+interface HeaderProps {
+  onRecClick?: () => void;
+}
+
+export function Header({ onRecClick }: HeaderProps) {
   const [showLanguageSelector, setShowLanguageSelector] = useState(false);
 
   return (
@@ -26,6 +30,24 @@ export function Header() {
         </div>
 
         <div className="flex items-center gap-2">
+          {/* REC Button */}
+          {onRecClick && (
+            <button
+              onClick={onRecClick}
+              className="flex items-center gap-1 px-2 py-1 rounded-full border border-[#fb2c36] hover:bg-[rgba(251,44,54,0.1)] transition-colors"
+              aria-label="Record"
+            >
+              <div className="w-2 h-2">
+                <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 8 8">
+                  <circle cx="4" cy="4" fill="#FB2C36" r="4" />
+                </svg>
+              </div>
+              <span className="font-['Roboto',sans-serif] text-[12px] text-[#fb2c36]">
+                REC
+              </span>
+            </button>
+          )}
+          
           <button
             className="hover:opacity-80 transition-opacity"
             aria-label="Settings"

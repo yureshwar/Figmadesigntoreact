@@ -1,4 +1,6 @@
 import svgPathsNew from "../imports/svg-hfh3cd2q4z";
+import { IconButton } from "./IconButton";
+import { cn } from "../lib/cn";
 
 interface StepProps {
   title: string;
@@ -9,18 +11,24 @@ interface StepProps {
 }
 
 export function Step({ title, delay, completed, failed, onEdit }: StepProps) {
+  const getIconColor = () => {
+    if (failed) return "hsl(var(--widget-status-error))";
+    if (completed) return "hsl(var(--widget-status-success))";
+    return "hsl(var(--widget-icon-secondary))";
+  };
+
   return (
     <div>
       <div className="content-stretch flex gap-[10px] h-[44px] items-center px-[10px] py-[10px]">
         {/* Check/Cancel Icon */}
-        <div className="relative shrink-0 size-[24px]">
+        <div className="relative shrink-0 size-6">
           <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 24 24">
             {failed ? (
               <>
                 <g clipPath="url(#clip0_cancel)">
                   <path 
                     d={svgPathsNew.p2511d980} 
-                    fill="#FF6467" 
+                    fill={getIconColor()}
                   />
                 </g>
                 <defs>
@@ -34,7 +42,7 @@ export function Step({ title, delay, completed, failed, onEdit }: StepProps) {
                 <g clipPath="url(#clip0_check)">
                   <path 
                     d={svgPathsNew.p2de1ad00} 
-                    fill={completed ? "#22BB33" : "#969696"} 
+                    fill={getIconColor()}
                   />
                 </g>
                 <defs>
@@ -48,31 +56,34 @@ export function Step({ title, delay, completed, failed, onEdit }: StepProps) {
         </div>
 
         {/* Step Title */}
-        <div className="flex flex-col font-['Raleway',sans-serif] font-semibold justify-center leading-[0] relative shrink-0 text-[#1c1c1e] text-[20px] text-center text-nowrap">
+        <div className={cn(
+          "flex flex-col font-['Raleway',sans-serif] font-semibold justify-center leading-[0] relative shrink-0 text-[20px] text-center text-nowrap",
+          "text-widget-text-primary"
+        )}>
           <p className="leading-[normal] whitespace-pre">{title}</p>
         </div>
         
         <div className="flex-1" />
         
         {/* Edit Icon */}
-        <button
+        <IconButton
           onClick={onEdit}
-          className="relative shrink-0 size-[20px] hover:opacity-70 transition-opacity"
+          size="sm"
           aria-label={`Edit ${title}`}
         >
           <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 24 24">
-            <path d={svgPathsNew.p157c33f0} fill="black" />
+            <path d={svgPathsNew.p157c33f0} fill="hsl(var(--widget-icon-primary))" />
           </svg>
-        </button>
+        </IconButton>
       </div>
       
       {/* Delay indicator if present */}
       {delay && (
         <div className="flex gap-[10px] items-center ml-9 h-[28px]">
-          <div className="size-[28px]">
+          <div className="size-7">
             <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 28 28">
               <g clipPath="url(#clip0_alarm)">
-                <path d={svgPathsNew.p1655fa80} fill="#969696" />
+                <path d={svgPathsNew.p1655fa80} fill="hsl(var(--widget-icon-secondary))" />
               </g>
               <defs>
                 <clipPath id="clip0_alarm">
@@ -81,7 +92,10 @@ export function Step({ title, delay, completed, failed, onEdit }: StepProps) {
               </defs>
             </svg>
           </div>
-          <div className="flex flex-col font-['Raleway',sans-serif] font-semibold justify-center leading-[0] text-[#969696] text-[20px] text-center text-nowrap">
+          <div className={cn(
+            "flex flex-col font-['Raleway',sans-serif] font-semibold justify-center leading-[0] text-[20px] text-center text-nowrap",
+            "text-widget-text-secondary"
+          )}>
             <p className="leading-[normal] whitespace-pre">{delay} seconds delay</p>
           </div>
         </div>

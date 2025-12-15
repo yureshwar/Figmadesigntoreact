@@ -1,6 +1,8 @@
 import svgPathsDetail from "../imports/svg-0ikchrah8d";
 import { useState } from "react";
 import { ReportIssueDialog } from "./ReportIssueDialog";
+import { IconButton } from "./IconButton";
+import { cn } from "../lib/cn";
 
 interface FeedbackButtonsProps {
   onLike?: () => void;
@@ -36,15 +38,21 @@ export function FeedbackButtons({ onLike, onDislike, onReport }: FeedbackButtons
   return (
     <div className="flex gap-[10px] items-center">
       {/* Like */}
-      <button 
+      <IconButton 
         onClick={handleLike}
-        className="shrink-0 hover:opacity-70 transition-opacity"
+        size="md"
         aria-label="Like"
+        className={cn(isLiked && "opacity-100")}
       >
-        <div className="size-[24px]">
+        <div className="size-6">
           <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 24 24">
             <g clipPath="url(#clip0_thumb_up)">
-              <path d={svgPathsDetail.p11b5d400} stroke="#1C1C1E" strokeWidth="2" fill={isLiked ? "black" : "none"} />
+              <path 
+                d={svgPathsDetail.p11b5d400} 
+                stroke="hsl(var(--widget-icon-primary))" 
+                strokeWidth="2" 
+                fill={isLiked ? "hsl(var(--widget-icon-active))" : "none"} 
+              />
             </g>
             <defs>
               <clipPath id="clip0_thumb_up">
@@ -53,18 +61,24 @@ export function FeedbackButtons({ onLike, onDislike, onReport }: FeedbackButtons
             </defs>
           </svg>
         </div>
-      </button>
+      </IconButton>
 
       {/* Dislike */}
-      <button 
+      <IconButton 
         onClick={handleDislike}
-        className="shrink-0 hover:opacity-70 transition-opacity"
+        size="md"
         aria-label="Dislike"
+        className={cn(isDisliked && "opacity-100")}
       >
-        <div className="size-[24px]">
+        <div className="size-6">
           <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 24 24">
             <g clipPath="url(#clip0_thumb_down)">
-              <path d={svgPathsDetail.pe9ecb00} stroke="#1C1C1E" strokeWidth="2" fill={isDisliked ? "black" : "none"} />
+              <path 
+                d={svgPathsDetail.pe9ecb00} 
+                stroke="hsl(var(--widget-icon-primary))" 
+                strokeWidth="2" 
+                fill={isDisliked ? "hsl(var(--widget-icon-active))" : "none"} 
+              />
             </g>
             <defs>
               <clipPath id="clip0_thumb_down">
@@ -73,19 +87,19 @@ export function FeedbackButtons({ onLike, onDislike, onReport }: FeedbackButtons
             </defs>
           </svg>
         </div>
-      </button>
+      </IconButton>
 
       {/* Report */}
       <div className="relative">
-        <button 
+        <IconButton 
           onClick={handleReportClick}
-          className="shrink-0 hover:opacity-70 transition-opacity"
+          size="md"
           aria-label="Report"
         >
-          <div className="size-[24px]">
+          <div className="size-6">
             <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 24 24">
               <g clipPath="url(#clip0_report)">
-                <path d={svgPathsDetail.p3889b800} fill="black" />
+                <path d={svgPathsDetail.p3889b800} fill="hsl(var(--widget-icon-primary))" />
               </g>
               <defs>
                 <clipPath id="clip0_report">
@@ -94,7 +108,7 @@ export function FeedbackButtons({ onLike, onDislike, onReport }: FeedbackButtons
               </defs>
             </svg>
           </div>
-        </button>
+        </IconButton>
         
         {showReportDialog && (
           <ReportIssueDialog 

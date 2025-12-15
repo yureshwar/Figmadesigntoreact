@@ -1,4 +1,5 @@
 import { Step } from "./Step";
+import { cn } from "../lib/cn";
 
 export interface StepData {
   title: string;
@@ -15,12 +16,15 @@ interface StepsListProps {
 export function StepsList({ steps, onEditStep }: StepsListProps) {
   return (
     <div className="w-full flex flex-col">
-      <h3 className="flex flex-col font-['Raleway',sans-serif] font-semibold h-[33px] justify-center leading-[0] text-[#1c1c1e] text-[20px] mb-4">
+      <h3 className={cn(
+        "flex flex-col font-['Raleway',sans-serif] font-semibold h-[33px] justify-center leading-[0] text-[20px] mb-4",
+        "text-widget-text-primary"
+      )}>
         <p className="leading-[normal]">Steps</p>
       </h3>
 
       {/* Steps List */}
-      <div className="flex flex-col gap-[12px]">
+      <div className="flex flex-col gap-3">
         {steps.map((step, index) => (
           <Step
             key={index}
