@@ -105,17 +105,11 @@ export function Step({ title, delay, completed, failed, onEdit }: StepProps) {
       {/* Failed step tooltip */}
       {failed && (
         <div className="relative ml-[36px] mt-1 mb-2 z-10">
-          {/* Arrow pointing up */}
-          <div className="absolute -top-[7px] left-[5px] w-[9.526px] h-[7.5px]">
-            <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 10 8">
-              <path d={svgPathsFailed.p4e54100} fill="white" />
-            </svg>
-          </div>
           {/* Tooltip box */}
-          <div className="bg-white flex h-[30px] items-center px-[10px] py-[10px] rounded-[4px] w-fit border border-gray-200" style={{ boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.15)' }}>
-            <p className="font-['Montserrat',sans-serif] text-[16px] text-black whitespace-nowrap">
-              ! Unable to find
-            </p>
+          <div className="bg-black text-white text-[12px] px-3 py-2 rounded-md shadow-lg w-fit">
+            ! Unable to find
+            {/* Arrow pointing up */}
+            <div className="absolute -top-1 left-4 w-2 h-2 bg-black rotate-45"></div>
           </div>
         </div>
       )}
