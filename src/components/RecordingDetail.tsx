@@ -2,6 +2,9 @@ import { TitleBar } from "./TitleBar";
 import { PlayerControls } from "./PlayerControls";
 import { FeedbackButtons } from "./FeedbackButtons";
 import { StepsList, StepData } from "./StepsList";
+import { StepEditForm } from "./StepEditForm";
+import { Step } from "./Step";
+import { useState } from "react";
 
 interface RecordingDetailProps {
   title: string;
@@ -11,7 +14,8 @@ interface RecordingDetailProps {
 }
 
 export function RecordingDetail({ title, onBack, onShare, onDelete }: RecordingDetailProps) {
-  const steps: StepData[] = [
+  const [editingStepIndex, setEditingStepIndex] = useState<number | null>(null);
+  const [steps, setSteps] = useState<StepData[]>([
     { title: "Home", completed: true },
     { title: "Projects", delay: 3, completed: true },
     { title: "Reports", completed: true },
@@ -27,7 +31,7 @@ export function RecordingDetail({ title, onBack, onShare, onDelete }: RecordingD
     { title: "Documents", delay: 4, completed: false },
     { title: "Team", completed: true },
     { title: "Analytics", completed: false, failed: true },
-  ];
+  ]);
 
   const handleTitleChange = (newTitle: string) => {
     console.log("Title changed to:", newTitle);
@@ -35,8 +39,27 @@ export function RecordingDetail({ title, onBack, onShare, onDelete }: RecordingD
   };
 
   const handleEditStep = (stepTitle: string) => {
-    console.log("Edit step:", stepTitle);
-    // Add your step edit logic here
+    const stepIndex = steps.findIndex(step => step.title === stepTitle);
+    if (stepIndex !== -1) {
+      setEditingStepIndex(stepIndex);
+    }
+  };
+
+  const handleSaveEditedStep = (stepData: { title: string; delay?: number }) => {
+    if (editingStepIndex !== null) {
+      const updatedSteps = [...steps];
+      updatedSteps[editingStepIndex] = {
+        ...updatedSteps[editingStepIndex],
+        title: stepData.title,
+        delay: stepData.delay,
+      };
+      setSteps(updatedSteps);
+      setEditingStepIndex(null);
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setEditingStepIndex(null);
   };
 
   const handleReport = (issueType: string, description: string) => {
@@ -65,7 +88,35 @@ export function RecordingDetail({ title, onBack, onShare, onDelete }: RecordingD
       </div>
 
       {/* Steps Section */}
-      <StepsList steps={steps} onEditStep={handleEditStep} />
+      <div className="w-full flex flex-col">
+        <h3 className="flex flex-col font-['Raleway',sans-serif] font-semibold h-[33px] justify-center leading-[0] text-[20px] mb-4 text-black">
+          <p className="leading-[normal]">Steps</p>
+        </h3>
+
+        <div className="flex flex-col gap-3">
+          {steps.map((step, index) => (
+            <div key={index}>
+              {editingStepIndex === index ? (
+                <StepEditForm
+                  stepNumber={index + 1}
+                  initialTitle={step.title}
+                  initialDelay={step.delay}
+                  onSave={handleSaveEditedStep}
+                  onCancel={handleCancelEdit}
+                />
+              ) : (
+                <Step
+                  title={step.title}
+                  delay={step.delay}
+                  completed={step.completed}
+                  failed={step.failed}
+                  onEdit={() => handleEditStep(step.title)}
+                />
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

@@ -10,18 +10,24 @@ interface StepEditorProps {
   onSaveStep?: (stepData: any) => void;
   onFinalSave?: () => void;
   onCancel?: () => void;
+  initialStepData?: {
+    title?: string;
+    delay?: number;
+    type?: string;
+    tooltip?: string;
+  };
 }
 
-export function StepEditor({ onClose, stepNumber, completedSteps = [], onSaveStep, onFinalSave, onCancel }: StepEditorProps) {
+export function StepEditor({ onClose, stepNumber, completedSteps = [], onSaveStep, onFinalSave, onCancel, initialStepData }: StepEditorProps) {
   const [showPermissions, setShowPermissions] = useState(false);
   const [isDoctorChecked, setIsDoctorChecked] = useState(false);
   const [isEditingHome, setIsEditingHome] = useState(false);
-  const [homeValue, setHomeValue] = useState(stepNumber === 1 ? "Home" : "Appointments");
-  const [selectedType, setSelectedType] = useState("Link");
-  const [tooltipValue, setTooltipValue] = useState("");
+  const [homeValue, setHomeValue] = useState(initialStepData?.title || (stepNumber === 1 ? "Home" : "Appointments"));
+  const [selectedType, setSelectedType] = useState(initialStepData?.type || "Link");
+  const [tooltipValue, setTooltipValue] = useState(initialStepData?.tooltip || "");
   const [isEditingTooltip, setIsEditingTooltip] = useState(false);
-  const [enableSlowReplay, setEnableSlowReplay] = useState(false);
-  const [delaySeconds, setDelaySeconds] = useState("3");
+  const [enableSlowReplay, setEnableSlowReplay] = useState(initialStepData?.delay ? true : false);
+  const [delaySeconds, setDelaySeconds] = useState(initialStepData?.delay?.toString() || "3");
   const [labels, setLabels] = useState([{ id: 1, value: "" }]);
   const [showSkipTooltip, setShowSkipTooltip] = useState(false);
   const [showPersonalTooltip, setShowPersonalTooltip] = useState(false);
