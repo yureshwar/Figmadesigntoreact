@@ -1,6 +1,7 @@
 import svgPaths from "../imports/svg-s04gq19zek";
 import { useState } from "react";
 import { LanguageSelector } from "./LanguageSelector";
+import { usePanelPosition } from "../contexts/PanelPositionContext";
 
 interface HeaderProps {
   onRecClick?: () => void;
@@ -8,17 +9,50 @@ interface HeaderProps {
 
 export function Header({ onRecClick }: HeaderProps) {
   const [showLanguageSelector, setShowLanguageSelector] = useState(false);
+  const { position, togglePosition } = usePanelPosition();
 
   return (
     <>
       {/* Header */}
       <header className="w-full flex items-center justify-between mb-6">
-        <button
-          className="w-6 h-6 border-2 border-[#8e8e93] rounded flex items-end justify-center pb-0.5 hover:bg-gray-100 transition-colors"
-          aria-label="Menu"
-        >
-          <div className="w-4 h-0.5 bg-[#8e8e93] rounded-full" />
-        </button>
+        <div className="flex items-center gap-2">
+          {/* Minimize Button */}
+          <button
+            className="w-6 h-6 border-2 border-[#8e8e93] rounded flex items-end justify-center pb-0.5 hover:bg-gray-100 transition-colors"
+            aria-label="Menu"
+          >
+            <div className="w-4 h-0.5 bg-[#8e8e93] rounded-full" />
+          </button>
+
+          {/* Position Toggle Button */}
+          <button
+            onClick={togglePosition}
+            className="w-6 h-6 border-2 border-[#8e8e93] rounded flex items-center justify-center hover:bg-gray-100 transition-colors"
+            aria-label="Toggle panel position"
+            title={`Snap to ${position === 'left' ? 'right' : 'left'}`}
+          >
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24">
+              {position === 'right' ? (
+                // Arrow pointing left
+                <path d="M15 18L9 12L15 6" stroke="#8E8E93" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              ) : (
+                // Arrow pointing right
+                <path d="M9 18L15 12L9 6" stroke="#8E8E93" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              )}
+            </svg>
+          </button>
+
+          {/* Move/Drag Button */}
+          <button
+            className="w-6 h-6 border-2 border-[#8e8e93] rounded flex items-center justify-center hover:bg-gray-100 transition-colors drag-handle cursor-grab active:cursor-grabbing"
+            aria-label="Drag to move panel"
+            title="Drag to move panel"
+          >
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24">
+              <path d="M9 5L9 19M15 5L15 19M5 9L19 9M5 15L19 15" stroke="#8E8E93" strokeWidth="2" strokeLinecap="round" />
+            </svg>
+          </button>
+        </div>
 
         <div className="flex items-center gap-2">
           <h1 className="font-['Raleway',sans-serif] text-[32px] text-black">
