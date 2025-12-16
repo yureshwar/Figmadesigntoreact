@@ -19,13 +19,13 @@ export function ShareDialog({ url = "https://recording.com", onClose }: ShareDia
     <>
       {/* Backdrop - transparent click area */}
       <div 
-        className="fixed inset-0 bg-transparent z-40"
+        className="fixed inset-0 bg-black/10 z-40"
         onClick={onClose}
         aria-label="Close dialog"
       />
       
       {/* Dialog - matches Figma design exactly */}
-      <div className="absolute right-full top-1/2 -translate-y-1/2 mr-2 z-50 bg-white h-[37px] w-[294px] rounded-[3px] overflow-clip shadow-[0px_2px_8px_rgba(0,0,0,0.1)]">
+      <div className="absolute right-full top-1/2 -translate-y-1/2 mr-2 z-50 bg-white h-[37px] w-[294px] rounded-[3px] border border-[#e0e0e0]" style={{ boxShadow: '0px 4px 16px rgba(0, 0, 0, 0.25), 0px 2px 4px rgba(0, 0, 0, 0.15)' }}>
         <p className="absolute font-['Raleway',sans-serif] font-semibold leading-normal left-[7px] text-[14px] text-black text-nowrap top-[11px] whitespace-pre">
           Copy the link
         </p>
@@ -50,7 +50,7 @@ export function ShareDialog({ url = "https://recording.com", onClose }: ShareDia
         </button>
         
         {/* Arrow pointing right to the share button */}
-        <div className="absolute -right-[10px] top-1/2 -translate-y-1/2 w-[10px] h-[15px]">
+        <div className="absolute -right-[10px] top-1/2 -translate-y-1/2 w-[10px] h-[15px]" style={{ filter: 'drop-shadow(-1px 0px 2px rgba(0, 0, 0, 0.15))' }}>
           <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 10 15">
             <path d="M0 0L10 7.5L0 15V0Z" fill="white" />
           </svg>

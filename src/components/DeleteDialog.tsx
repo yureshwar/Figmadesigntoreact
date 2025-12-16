@@ -11,13 +11,13 @@ export function DeleteDialog({ onConfirm, onCancel }: DeleteDialogProps) {
     <>
       {/* Backdrop */}
       <div 
-        className="fixed inset-0 bg-transparent z-40"
+        className="fixed inset-0 bg-black/10 z-40"
         onClick={onCancel}
         aria-label="Close dialog"
       />
       
       {/* Dialog - matches Figma design exactly */}
-      <div className="absolute right-0 top-full mt-2 shadow-lg z-50 bg-white h-[58px] w-[179px] rounded-[4px] overflow-clip">
+      <div className="absolute right-0 top-full mt-2 z-50 bg-white h-[58px] w-[179px] rounded-[4px] border border-[#e0e0e0]" style={{ boxShadow: '0px 4px 16px rgba(0, 0, 0, 0.25), 0px 2px 4px rgba(0, 0, 0, 0.15)' }}>
         <p className="absolute font-['Raleway',sans-serif] font-semibold leading-normal left-[10px] text-[10px] text-black text-nowrap top-[6px] whitespace-pre">
           Delete Recording
         </p>
@@ -54,7 +54,7 @@ export function DeleteDialog({ onConfirm, onCancel }: DeleteDialogProps) {
         </div>
         
         {/* Arrow pointing up to delete button */}
-        <div className="absolute -top-[6px] right-4 w-[8px] h-[7px]">
+        <div className="absolute -top-[6px] right-4 w-[8px] h-[7px]" style={{ filter: 'drop-shadow(0px -1px 2px rgba(0, 0, 0, 0.15))' }}>
           <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 8 7">
             <path d={svgPaths.p18c08980} fill="white" />
           </svg>

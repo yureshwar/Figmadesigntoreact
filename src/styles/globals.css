@@ -236,6 +236,7 @@
   --color-sidebar-ring: var(--sidebar-ring);
   
   /* Widget-specific colors */
+  --color-widget-panel: var(--widget-panel-bg);
   --color-widget-panel-bg: var(--widget-panel-bg);
   --color-widget-panel-border: var(--widget-panel-border);
   --color-widget-panel-shadow: var(--widget-panel-shadow);
@@ -254,26 +255,41 @@
   --color-widget-status-warning: var(--widget-status-warning);
   --color-widget-status-info: var(--widget-status-info);
   
+  --color-widget-button-primary: var(--widget-button-primary-bg);
   --color-widget-button-primary-bg: var(--widget-button-primary-bg);
   --color-widget-button-primary-text: var(--widget-button-primary-text);
   
+  --color-widget-input: var(--widget-input-bg);
   --color-widget-input-bg: var(--widget-input-bg);
   --color-widget-input-border: var(--widget-input-border);
   --color-widget-input-shadow: var(--widget-input-shadow);
   
+  --color-widget-dialog: var(--widget-dialog-bg);
   --color-widget-dialog-bg: var(--widget-dialog-bg);
   --color-widget-dialog-overlay: var(--widget-dialog-overlay);
   --color-widget-dialog-border: var(--widget-dialog-border);
   
+  --color-widget-tab-active: var(--widget-tab-active-bg);
   --color-widget-tab-active-bg: var(--widget-tab-active-bg);
   --color-widget-tab-active-text: var(--widget-tab-active-text);
+  --color-widget-tab-inactive: var(--widget-tab-inactive-bg);
   --color-widget-tab-inactive-bg: var(--widget-tab-inactive-bg);
   --color-widget-tab-inactive-text: var(--widget-tab-inactive-text);
   --color-widget-tab-inactive-border: var(--widget-tab-inactive-border);
   
+  --color-widget-card: var(--widget-card-bg);
   --color-widget-card-bg: var(--widget-card-bg);
   --color-widget-card-border: var(--widget-card-border);
   --color-widget-card-hover-shadow: var(--widget-card-hover-shadow);
+  
+  /* Border radius for widget */
+  --radius-widget-sm: var(--widget-radius-sm);
+  --radius-widget-md: var(--widget-radius-md);
+  --radius-widget-lg: var(--widget-radius-lg);
+  --radius-widget-full: var(--widget-radius-full);
+  
+  /* Opacity */
+  --opacity-widget-hover: var(--widget-button-hover-opacity);
 }
 
 @layer base {

@@ -90,7 +90,7 @@ export function FeedbackButtons({ onLike, onDislike, onReport }: FeedbackButtons
       </IconButton>
 
       {/* Report */}
-      <div className="relative">
+      <div className="relative overflow-visible">
         <IconButton 
           onClick={handleReportClick}
           size="md"

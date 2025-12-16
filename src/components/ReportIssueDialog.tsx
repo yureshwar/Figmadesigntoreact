@@ -30,13 +30,13 @@ export function ReportIssueDialog({ onSubmit, onCancel }: ReportIssueDialogProps
     <>
       {/* Backdrop */}
       <div 
-        className="fixed inset-0 bg-transparent z-40"
+        className="fixed inset-0 bg-black/10 z-40"
         onClick={onCancel}
         aria-label="Close dialog"
       />
       
       {/* Dialog - matches Figma design exactly */}
-      <div className="absolute right-0 top-full mt-2 shadow-lg z-50 bg-white h-[104.63px] w-[208px] rounded-[4px] overflow-clip">
+      <div className="absolute right-0 top-full mt-2 z-50 bg-white h-[104.63px] w-[208px] rounded-[4px] overflow-visible border border-[#e0e0e0]" style={{ boxShadow: '0px 4px 16px rgba(0, 0, 0, 0.25), 0px 2px 4px rgba(0, 0, 0, 0.15)' }}>
         <p className="absolute font-['Raleway',sans-serif] font-semibold leading-normal left-[8px] text-[10px] text-black text-nowrap top-[6px] whitespace-pre">
           Report Recording Issue
         </p>
@@ -69,11 +69,9 @@ export function ReportIssueDialog({ onSubmit, onCancel }: ReportIssueDialogProps
           {/* Dropdown Options */}
           {showDropdown && (
             <div className={cn(
-              "absolute top-[18px] left-0 w-[192px] shadow-lg z-50 max-h-32 overflow-y-auto",
-              "bg-white",
-              "border border-[#dbdbdb]",
-              "rounded-[2px]"
-            )}>
+              "absolute top-[18px] left-0 w-[192px] z-50 max-h-32 overflow-y-auto",
+              "bg-white border border-[#dbdbdb] rounded-[2px]"
+            )} style={{ boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.2)' }}>
               {issueTypes.map((type) => (
                 <button
                   key={type}

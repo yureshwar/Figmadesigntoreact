@@ -117,7 +117,7 @@ export function TitleBar({ title, onBack, onTitleChange, onShare, onDelete }: Ti
         </IconButton>
       )}
       
-      <div className="relative">
+      <div className="relative overflow-visible">
         <IconButton 
           onClick={handleDeleteClick}
           size="md"
@@ -143,7 +143,7 @@ export function TitleBar({ title, onBack, onTitleChange, onShare, onDelete }: Ti
         )}
       </div>
       
-      <div className="relative">
+      <div className="relative overflow-visible">
         <IconButton 
           onClick={handleShareClick}
           size="md"
