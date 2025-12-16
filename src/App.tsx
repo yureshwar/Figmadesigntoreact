@@ -1,5 +1,10 @@
 import HomePageUser from './components/HomePageUser';
+import { PanelPositionProvider } from './contexts/PanelPositionContext';
 
 export default function App() {
-  return <HomePageUser />;
+  return (
+    <PanelPositionProvider>
+      <HomePageUser />
+    </PanelPositionProvider>
+  );
 }
