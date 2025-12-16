@@ -11,6 +11,7 @@ export function Header({ onRecClick }: HeaderProps) {
   const [showLanguageSelector, setShowLanguageSelector] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [searchValue, setSearchValue] = useState("");
+  const [isMicActive, setIsMicActive] = useState(false);
   const { position, togglePosition, setIsPanelVisible, panelHeight, togglePanelHeight } = usePanelPosition();
   const headerRef = useRef<HTMLDivElement>(null);
 
@@ -209,32 +210,39 @@ export function Header({ onRecClick }: HeaderProps) {
               className="flex-1 bg-transparent border-none outline-none px-2 text-base font-['Roboto',sans-serif] text-black placeholder:text-black"
             />
             <button
+              onClick={() => setIsMicActive(!isMicActive)}
               className="shrink-0 hover:opacity-80 transition-opacity relative"
               aria-label="Voice search"
             >
-              <div className="w-8 h-8 rounded-full bg-white hover:bg-black shadow-sm flex items-center justify-center transition-colors group">
+              <div className={`w-8 h-8 rounded-full shadow-sm flex items-center justify-center transition-colors group ${
+                isMicActive 
+                  ? 'bg-[#E57373] hover:bg-[#EF5350]' 
+                  : 'bg-white hover:bg-black'
+              }`}>
                 <svg
-                  className="w-7 h-7"
+                  className="w-5 h-5"
                   fill="none"
-                  viewBox="0 0 48 49"
+                  viewBox="0 0 24 24"
                 >
-                  <g clipPath="url(#clip0_mic)">
-                    <path
-                      d={svgPaths.p37808b00}
-                      fill="#1C1C1E"
-                      className="group-hover:fill-white transition-colors"
-                    />
-                  </g>
-                  <defs>
-                    <clipPath id="clip0_mic">
-                      <rect
-                        fill="white"
-                        height="21.4737"
-                        transform="translate(9.31023 5.36845)"
-                        width="21.2408"
-                      />
-                    </clipPath>
-                  </defs>
+                  <path
+                    d="M12 1C10.3431 1 9 2.34315 9 4V12C9 13.6569 10.3431 15 12 15C13.6569 15 15 13.6569 15 12V4C15 2.34315 13.6569 1 12 1Z"
+                    fill={isMicActive ? '#FFFFFF' : '#1C1C1E'}
+                    className={isMicActive ? '' : 'group-hover:fill-white transition-colors'}
+                  />
+                  <path
+                    d="M5 10V12C5 15.866 8.13401 19 12 19C15.866 19 19 15.866 19 12V10"
+                    stroke={isMicActive ? '#FFFFFF' : '#1C1C1E'}
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    className={isMicActive ? '' : 'group-hover:stroke-white transition-colors'}
+                  />
+                  <path
+                    d="M12 19V23M12 23H8M12 23H16"
+                    stroke={isMicActive ? '#FFFFFF' : '#1C1C1E'}
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    className={isMicActive ? '' : 'group-hover:stroke-white transition-colors'}
+                  />
                 </svg>
               </div>
             </button>
@@ -244,19 +252,23 @@ export function Header({ onRecClick }: HeaderProps) {
                 className="shrink-0 ml-2 hover:opacity-80 transition-opacity"
                 aria-label="Translate"
               >
-                <div className="w-8 h-8 rounded-full bg-white hover:bg-black shadow-sm flex items-center justify-center transition-colors group">
+                <div className={`w-8 h-8 rounded-full shadow-sm flex items-center justify-center transition-colors group ${
+                  showLanguageSelector 
+                    ? 'bg-black' 
+                    : 'bg-white hover:bg-black'
+                }`}>
                   <svg
-                    className="w-7 h-7"
+                    className="w-5 h-5"
                     fill="none"
-                    viewBox="0 0 48 49"
+                    viewBox="0 0 24 24"
                   >
                     <path
-                      d={svgPaths.p32398380}
-                      stroke="black"
+                      d="M3 5H15M9 3V5M10.048 14.5C8.948 12.978 8.128 11.204 7.668 9.5M12.5 18H11.5M7.5 9.5H13.5M13.5 9.5C13.232 10.478 12.85 11.41 12.372 12.282M13.5 9.5H15.5M12.372 12.282C11.736 13.406 10.936 14.422 10.048 14.5M12.372 12.282L15 18M10.048 14.5L7.5 20.5M10.048 14.5C10.134 14.498 10.22 14.485 10.304 14.461M18 21L21.5 14.5L19.121 13.621M14.5 14.5L15.958 17.879M15.958 17.879L19.121 13.621M15.958 17.879L17.414 16.75"
+                      stroke={showLanguageSelector ? '#FFFFFF' : '#1C1C1E'}
+                      strokeWidth="1.5"
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      strokeWidth="2"
-                      className="group-hover:stroke-white transition-colors"
+                      className={showLanguageSelector ? '' : 'group-hover:stroke-white transition-colors'}
                     />
                   </svg>
                 </div>
@@ -316,10 +328,15 @@ export function Header({ onRecClick }: HeaderProps) {
             )}
             
             <button
+              onClick={() => setIsMicActive(!isMicActive)}
               className="shrink-0 hover:opacity-80 transition-opacity relative"
               aria-label="Voice search"
             >
-              <div className="w-8 h-8 rounded-full bg-white hover:bg-black shadow-sm flex items-center justify-center transition-colors group">
+              <div className={`w-8 h-8 rounded-full shadow-sm flex items-center justify-center transition-colors group ${
+                isMicActive 
+                  ? 'bg-[#E57373] hover:bg-[#EF5350]' 
+                  : 'bg-white hover:bg-black'
+              }`}>
                 <svg
                   className="w-5 h-5"
                   fill="none"
@@ -327,22 +344,22 @@ export function Header({ onRecClick }: HeaderProps) {
                 >
                   <path
                     d="M12 1C10.3431 1 9 2.34315 9 4V12C9 13.6569 10.3431 15 12 15C13.6569 15 15 13.6569 15 12V4C15 2.34315 13.6569 1 12 1Z"
-                    fill="#1C1C1E"
-                    className="group-hover:fill-white transition-colors"
+                    fill={isMicActive ? '#FFFFFF' : '#1C1C1E'}
+                    className={isMicActive ? '' : 'group-hover:fill-white transition-colors'}
                   />
                   <path
                     d="M5 10V12C5 15.866 8.13401 19 12 19C15.866 19 19 15.866 19 12V10"
-                    stroke="#1C1C1E"
+                    stroke={isMicActive ? '#FFFFFF' : '#1C1C1E'}
                     strokeWidth="2"
                     strokeLinecap="round"
-                    className="group-hover:stroke-white transition-colors"
+                    className={isMicActive ? '' : 'group-hover:stroke-white transition-colors'}
                   />
                   <path
                     d="M12 19V23M12 23H8M12 23H16"
-                    stroke="#1C1C1E"
+                    stroke={isMicActive ? '#FFFFFF' : '#1C1C1E'}
                     strokeWidth="2"
                     strokeLinecap="round"
-                    className="group-hover:stroke-white transition-colors"
+                    className={isMicActive ? '' : 'group-hover:stroke-white transition-colors'}
                   />
                 </svg>
               </div>
@@ -353,7 +370,11 @@ export function Header({ onRecClick }: HeaderProps) {
                 className="shrink-0 ml-2 hover:opacity-80 transition-opacity"
                 aria-label="Translate"
               >
-                <div className="w-8 h-8 rounded-full bg-white hover:bg-black shadow-sm flex items-center justify-center transition-colors group">
+                <div className={`w-8 h-8 rounded-full shadow-sm flex items-center justify-center transition-colors group ${
+                  showLanguageSelector 
+                    ? 'bg-black' 
+                    : 'bg-white hover:bg-black'
+                }`}>
                   <svg
                     className="w-5 h-5"
                     fill="none"
@@ -361,11 +382,11 @@ export function Header({ onRecClick }: HeaderProps) {
                   >
                     <path
                       d="M3 5H15M9 3V5M10.048 14.5C8.948 12.978 8.128 11.204 7.668 9.5M12.5 18H11.5M7.5 9.5H13.5M13.5 9.5C13.232 10.478 12.85 11.41 12.372 12.282M13.5 9.5H15.5M12.372 12.282C11.736 13.406 10.936 14.422 10.048 14.5M12.372 12.282L15 18M10.048 14.5L7.5 20.5M10.048 14.5C10.134 14.498 10.22 14.485 10.304 14.461M18 21L21.5 14.5L19.121 13.621M14.5 14.5L15.958 17.879M15.958 17.879L19.121 13.621M15.958 17.879L17.414 16.75"
-                      stroke="#1C1C1E"
+                      stroke={showLanguageSelector ? '#FFFFFF' : '#1C1C1E'}
                       strokeWidth="1.5"
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      className="group-hover:stroke-white transition-colors"
+                      className={showLanguageSelector ? '' : 'group-hover:stroke-white transition-colors'}
                     />
                   </svg>
                 </div>
