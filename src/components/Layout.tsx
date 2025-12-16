@@ -10,7 +10,7 @@ interface LayoutProps {
 }
 
 export function Layout({ children, onRecClick }: LayoutProps) {
-  const { position, coordinates, setCoordinates, isDragging, setIsDragging, isPanelVisible } = usePanelPosition();
+  const { position, coordinates, setCoordinates, isDragging, setIsDragging, isPanelVisible, panelHeight } = usePanelPosition();
   const panelRef = useRef<HTMLDivElement>(null);
   const dragOffset = useRef({ x: 0, y: 0 });
 
@@ -70,6 +70,9 @@ export function Layout({ children, onRecClick }: LayoutProps) {
 
   // Calculate position style
   const getPositionStyle = () => {
+    // Determine max height based on panelHeight setting
+    const maxHeightValue = panelHeight === 'full' ? '95vh' : '50vh';
+    
     // If coordinates are set (dragged), use them
     if (coordinates.x !== 0 || coordinates.y !== 0) {
       return {
@@ -80,7 +83,7 @@ export function Layout({ children, onRecClick }: LayoutProps) {
         bottom: 'auto',
         maxWidth: '480px',
         width: '480px',
-        maxHeight: '95vh',
+        maxHeight: maxHeightValue,
       };
     }
     
@@ -91,7 +94,7 @@ export function Layout({ children, onRecClick }: LayoutProps) {
       [position]: '20px',
       maxWidth: '480px',
       width: 'calc(100% - 40px)',
-      maxHeight: '95vh',
+      maxHeight: maxHeightValue,
     };
   };
 
@@ -109,20 +112,21 @@ export function Layout({ children, onRecClick }: LayoutProps) {
           style={{
             ...getPositionStyle(),
             cursor: isDragging ? 'grabbing' : 'default',
-            overflowY: 'auto',
-            overflowX: 'visible',
+            overflow: 'hidden', // Changed from auto to hidden
           }}
         >
-          <div className="flex flex-col px-3 py-4 overflow-visible">
-            {/* Header with Search Bar */}
+          {/* Header - Fixed at top */}
+          <div className="flex-shrink-0 px-3 pt-4">
             <Header onRecClick={onRecClick} />
+          </div>
 
-            {/* Main Content */}
-            <main className="w-full flex flex-col overflow-visible">
-              {children}
-            </main>
+          {/* Main Content - Scrollable */}
+          <main className="flex-1 w-full flex flex-col px-3 pb-16 overflow-y-auto overflow-x-visible">
+            {children}
+          </main>
 
-            {/* Footer */}
+          {/* Footer - Fixed at bottom */}
+          <div className="flex-shrink-0 px-3 pb-4">
             <Footer />
           </div>
         </div>

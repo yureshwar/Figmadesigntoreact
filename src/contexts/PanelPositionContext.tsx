@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, ReactNode } from 'react';
 
 type PanelPosition = 'left' | 'right';
+type PanelHeight = 'half' | 'full';
 
 interface PanelPositionContextType {
   position: PanelPosition;
@@ -14,6 +15,9 @@ interface PanelPositionContextType {
   setIsPanelVisible: (visible: boolean) => void;
   floatingIconPosition: { x: number; y: number };
   setFloatingIconPosition: (coords: { x: number; y: number }) => void;
+  panelHeight: PanelHeight;
+  setPanelHeight: (height: PanelHeight) => void;
+  togglePanelHeight: () => void;
 }
 
 const PanelPositionContext = createContext<PanelPositionContextType | undefined>(undefined);
@@ -24,12 +28,17 @@ export function PanelPositionProvider({ children }: { children: ReactNode }) {
   const [isDragging, setIsDragging] = useState(false);
   const [isPanelVisible, setIsPanelVisible] = useState(true);
   const [floatingIconPosition, setFloatingIconPosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+  const [panelHeight, setPanelHeight] = useState<PanelHeight>('full');
 
   const togglePosition = () => {
     const newPosition = position === 'left' ? 'right' : 'left';
     setPosition(newPosition);
     // Reset coordinates when toggling to snap to sides
     setCoordinates({ x: 0, y: 0 });
+  };
+
+  const togglePanelHeight = () => {
+    setPanelHeight(prev => prev === 'full' ? 'half' : 'full');
   };
 
   return (
@@ -44,7 +53,10 @@ export function PanelPositionProvider({ children }: { children: ReactNode }) {
       isPanelVisible,
       setIsPanelVisible,
       floatingIconPosition,
-      setFloatingIconPosition
+      setFloatingIconPosition,
+      panelHeight,
+      setPanelHeight,
+      togglePanelHeight
     }}>
       {children}
     </PanelPositionContext.Provider>
