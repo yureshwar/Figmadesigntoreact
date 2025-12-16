@@ -9,7 +9,15 @@ interface HeaderProps {
 
 export function Header({ onRecClick }: HeaderProps) {
   const [showLanguageSelector, setShowLanguageSelector] = useState(false);
-  const { position, togglePosition } = usePanelPosition();
+  const { position, togglePosition, setIsPanelVisible } = usePanelPosition();
+
+  const handleMinimize = () => {
+    setIsPanelVisible(false);
+  };
+
+  const handleClose = () => {
+    setIsPanelVisible(false);
+  };
 
   return (
     <>
@@ -18,6 +26,7 @@ export function Header({ onRecClick }: HeaderProps) {
         <div className="flex items-center gap-2">
           {/* Minimize Button */}
           <button
+            onClick={handleMinimize}
             className="w-6 h-6 border-2 border-[#8e8e93] rounded flex items-end justify-center pb-0.5 hover:bg-gray-100 transition-colors"
             aria-label="Menu"
           >
@@ -112,6 +121,7 @@ export function Header({ onRecClick }: HeaderProps) {
             </div>
           </button>
           <button
+            onClick={handleClose}
             className="w-6 h-6 border-2 border-[#8e8e93] rounded flex items-center justify-center hover:bg-gray-100 transition-colors"
             aria-label="Close"
           >

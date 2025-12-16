@@ -43,6 +43,9 @@
       --tw-drop-shadow-alpha: 100%;
       --tw-drop-shadow-size: initial;
       --tw-duration: initial;
+      --tw-scale-x: 1;
+      --tw-scale-y: 1;
+      --tw-scale-z: 1;
     }
   }
 }
@@ -66,6 +69,7 @@
     --font-weight-normal: 400;
     --font-weight-medium: 500;
     --font-weight-semibold: 600;
+    --font-weight-bold: 700;
     --leading-normal: 1.5;
     --radius-2xl: 1rem;
     --default-transition-duration: .15s;
@@ -643,6 +647,10 @@
 
   .flex {
     display: flex;
+  }
+
+  .hidden {
+    display: none;
   }
 
   .size-5 {
@@ -1471,6 +1479,10 @@
     line-height: var(--tw-leading, var(--text-base--line-height));
   }
 
+  .text-\[6px\] {
+    font-size: 6px;
+  }
+
   .text-\[8px\] {
     font-size: 8px;
   }
@@ -1536,9 +1548,19 @@
     line-height: normal;
   }
 
+  .leading-none {
+    --tw-leading: 1;
+    line-height: 1;
+  }
+
   .leading-normal {
     --tw-leading: var(--leading-normal);
     line-height: var(--leading-normal);
+  }
+
+  .font-bold {
+    --tw-font-weight: var(--font-weight-bold);
+    font-weight: var(--font-weight-bold);
   }
 
   .font-medium {
@@ -1722,6 +1744,15 @@
   }
 
   @media (hover: hover) {
+    .hover\:scale-105:hover {
+      --tw-scale-x: 105%;
+      --tw-scale-y: 105%;
+      --tw-scale-z: 105%;
+      scale: var(--tw-scale-x) var(--tw-scale-y);
+    }
+  }
+
+  @media (hover: hover) {
     .hover\:bg-\[\#808080\]:hover {
       background-color: gray;
     }
@@ -1784,6 +1815,13 @@
   @media (hover: hover) {
     .hover\:opacity-\[var\(--widget-button-hover-opacity\)\]:hover {
       opacity: var(--widget-button-hover-opacity);
+    }
+  }
+
+  @media (hover: hover) {
+    .hover\:shadow-xl:hover {
+      --tw-shadow: 0 20px 25px -5px var(--tw-shadow-color, #0000001a), 0 8px 10px -6px var(--tw-shadow-color, #0000001a);
+      box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
     }
   }
 
@@ -2161,4 +2199,22 @@ html {
 @property --tw-duration {
   syntax: "*";
   inherits: false
+}
+
+@property --tw-scale-x {
+  syntax: "*";
+  inherits: false;
+  initial-value: 1;
+}
+
+@property --tw-scale-y {
+  syntax: "*";
+  inherits: false;
+  initial-value: 1;
+}
+
+@property --tw-scale-z {
+  syntax: "*";
+  inherits: false;
+  initial-value: 1;
 }

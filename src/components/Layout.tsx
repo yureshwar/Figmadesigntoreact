@@ -1,6 +1,7 @@
 import { Header } from "./Header";
 import { Footer } from "./Footer";
 import { usePanelPosition } from "../contexts/PanelPositionContext";
+import { FloatingButton } from "./FloatingButton";
 import { useRef, useEffect } from "react";
 
 interface LayoutProps {
@@ -9,7 +10,7 @@ interface LayoutProps {
 }
 
 export function Layout({ children, onRecClick }: LayoutProps) {
-  const { position, coordinates, setCoordinates, isDragging, setIsDragging } = usePanelPosition();
+  const { position, coordinates, setCoordinates, isDragging, setIsDragging, isPanelVisible } = usePanelPosition();
   const panelRef = useRef<HTMLDivElement>(null);
   const dragOffset = useRef({ x: 0, y: 0 });
 
@@ -96,31 +97,36 @@ export function Layout({ children, onRecClick }: LayoutProps) {
 
   return (
     <div className="bg-[#f6f6f6] min-h-screen flex items-center p-4">
-      {/* Widget Container with Border */}
-      <div 
-        ref={panelRef}
-        onMouseDown={handleMouseDown}
-        className="bg-[#f6f6f6] border-2 border-[#d9d9d9] rounded-2xl shadow-2xl flex flex-col transition-all duration-300"
-        style={{
-          ...getPositionStyle(),
-          cursor: isDragging ? 'grabbing' : 'default',
-          overflowY: 'auto',
-          overflowX: 'visible',
-        }}
-      >
-        <div className="flex flex-col px-3 py-4 overflow-visible">
-          {/* Header with Search Bar */}
-          <Header onRecClick={onRecClick} />
+      {/* Floating Button - Shows when panel is hidden */}
+      {!isPanelVisible && <FloatingButton />}
 
-          {/* Main Content */}
-          <main className="w-full flex flex-col overflow-visible">
-            {children}
-          </main>
+      {/* Widget Container with Border - Shows when visible */}
+      {isPanelVisible && (
+        <div 
+          ref={panelRef}
+          onMouseDown={handleMouseDown}
+          className="bg-[#f6f6f6] border-2 border-[#d9d9d9] rounded-2xl shadow-2xl flex flex-col transition-all duration-300"
+          style={{
+            ...getPositionStyle(),
+            cursor: isDragging ? 'grabbing' : 'default',
+            overflowY: 'auto',
+            overflowX: 'visible',
+          }}
+        >
+          <div className="flex flex-col px-3 py-4 overflow-visible">
+            {/* Header with Search Bar */}
+            <Header onRecClick={onRecClick} />
 
-          {/* Footer */}
-          <Footer />
+            {/* Main Content */}
+            <main className="w-full flex flex-col overflow-visible">
+              {children}
+            </main>
+
+            {/* Footer */}
+            <Footer />
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
