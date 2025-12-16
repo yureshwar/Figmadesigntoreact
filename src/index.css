@@ -1773,6 +1773,10 @@
     outline-style: none;
   }
 
+  .paused {
+    animation-play-state: paused;
+  }
+
   @media (hover: hover) {
     .group-hover\:fill-white:is(:where(.group):hover *) {
       fill: var(--color-white);
