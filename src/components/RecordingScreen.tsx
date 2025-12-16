@@ -1,8 +1,9 @@
 interface RecordingScreenProps {
   onContainerClick: () => void;
+  onCancel: () => void;
 }
 
-export function RecordingScreen({ onContainerClick }: RecordingScreenProps) {
+export function RecordingScreen({ onContainerClick, onCancel }: RecordingScreenProps) {
   return (
     <div className="content-stretch flex flex-col gap-[20px] items-start w-full" data-name="Body Content">
       {/* Recording Started Header */}
@@ -28,6 +29,18 @@ export function RecordingScreen({ onContainerClick }: RecordingScreenProps) {
           <p className="leading-[normal]">Navigate and click through the website to see the steps here</p>
         </div>
       </button>
+      
+      {/* Cancel Button */}
+      <div className="w-full flex justify-center">
+        <button
+          onClick={onCancel}
+          className="bg-[#969696] rounded-[4px] px-8 py-3 hover:bg-[#808080] transition-colors"
+        >
+          <span className="font-['Raleway',sans-serif] font-semibold text-[16px] text-white">
+            Cancel Recording
+          </span>
+        </button>
+      </div>
     </div>
   );
 }

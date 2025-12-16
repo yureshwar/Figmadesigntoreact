@@ -1,8 +1,9 @@
 interface StartRecordingProps {
   onStart: () => void;
+  onCancel: () => void;
 }
 
-export function StartRecording({ onStart }: StartRecordingProps) {
+export function StartRecording({ onStart, onCancel }: StartRecordingProps) {
   return (
     <div className="flex flex-col items-center justify-center gap-5 py-20">
       <p className="font-['Raleway',sans-serif] font-semibold text-[24px] text-[#1c1c1e] text-center">
@@ -15,6 +16,15 @@ export function StartRecording({ onStart }: StartRecordingProps) {
       >
         <span className="font-['Raleway',sans-serif] font-semibold text-[24px] text-white">
           Start
+        </span>
+      </button>
+      
+      <button
+        onClick={onCancel}
+        className="bg-[#969696] rounded-[4px] px-8 py-3 hover:bg-[#808080] transition-colors"
+      >
+        <span className="font-['Raleway',sans-serif] font-semibold text-[16px] text-white">
+          Cancel
         </span>
       </button>
     </div>

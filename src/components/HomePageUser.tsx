@@ -91,9 +91,9 @@ export default function HomePageUser() {
   return (
     <Layout onRecClick={handleRecClick}>
       {recordingState === 'idle' && <SearchResults />}
-      {recordingState === 'start' && <StartRecording onStart={handleStart} />}
+      {recordingState === 'start' && <StartRecording onStart={handleStart} onCancel={handleCancel} />}
       {recordingState === 'countdown' && <Countdown count={countdown} />}
-      {recordingState === 'recording' && <RecordingScreen onContainerClick={handleContainerClick} />}
+      {recordingState === 'recording' && <RecordingScreen onContainerClick={handleContainerClick} onCancel={handleCancel} />}
       {recordingState === 'stepEditor' && (
         <StepEditor 
           onClose={handleCloseStepEditor} 
