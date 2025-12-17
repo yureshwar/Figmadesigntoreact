@@ -1,3 +1,6 @@
+// Import CSS - Vite plugin will automatically inject into Shadow DOM
+import './styles/globals.css';
+
 import HomePageUser from './components/HomePageUser';
 import { PanelPositionProvider } from './contexts/PanelPositionContext';
 
