@@ -1,121 +1,225 @@
 import { defineConfig, Plugin } from 'vite';
-import react from '@vitejs/plugin-react';
+import react from '@vitejs/plugin-react-swc';
+import path from 'path';
 
 /**
  * Shadow DOM CSS Injection Plugin
  * 
- * This plugin mimics webpack's custom style-loader behavior.
- * It automatically injects CSS into Shadow DOM instead of document head.
+ * This plugin ensures CSS is injected into Shadow DOM in BOTH dev and build modes.
  * 
- * Similar to webpack config:
- * {
- *   loader: 'style-loader',
- *   options: {
- *     insert: function (linkTag) {
- *       const parent = document.querySelector('#udan-react-root').shadowRoot;
- *       parent.appendChild(linkTag);
- *     }
- *   }
- * }
+ * How it works:
+ * - Injects an interceptor script that overrides DOM methods
+ * - When Vite tries to inject CSS, it's redirected to Shadow DOM
+ * - Works the same as webpack's custom style-loader
  */
 function shadowDOMCSSInjector(): Plugin {
   return {
     name: 'vite-plugin-shadow-dom-css',
-    apply: 'build', // Only in build mode
     
     transformIndexHtml: {
-      enforce: 'post',
+      enforce: 'pre',
       transform(html) {
-        // Inject the CSS interceptor script
         const interceptorScript = `
-          <script>
-            (function() {
-              'use strict';
-              
-              // Queue to store styles until Shadow DOM is ready
-              const styleQueue = [];
-              let shadowRootReady = false;
-              
-              // Function to inject style into Shadow DOM
-              function injectIntoShadowDOM(styleElement) {
-                const shadowHost = document.getElementById('udan-react-root');
-                if (shadowHost && shadowHost.shadowRoot) {
-                  shadowHost.shadowRoot.appendChild(styleElement);
-                  return true;
-                }
-                return false;
-              }
-              
-              // Process queued styles
-              function processQueue() {
-                while (styleQueue.length > 0) {
-                  const style = styleQueue.shift();
-                  if (!injectIntoShadowDOM(style)) {
-                    styleQueue.unshift(style);
-                    break;
-                  }
-                }
-              }
-              
-              // Check for Shadow DOM periodically
-              const checkInterval = setInterval(() => {
-                const shadowHost = document.getElementById('udan-react-root');
-                if (shadowHost && shadowHost.shadowRoot) {
-                  shadowRootReady = true;
-                  processQueue();
-                  clearInterval(checkInterval);
-                }
-              }, 10);
-              
-              // Intercept appendChild on document.head
-              const originalAppendChild = HTMLHeadElement.prototype.appendChild;
-              HTMLHeadElement.prototype.appendChild = function(node) {
-                // Check if it's a style element
-                if (node && node.tagName === 'STYLE') {
-                  // Try to inject into Shadow DOM
-                  if (shadowRootReady) {
-                    if (injectIntoShadowDOM(node)) {
-                      return node;
-                    }
-                  }
-                  
-                  // Queue it if Shadow DOM not ready
-                  styleQueue.push(node);
-                  return node;
-                }
-                
-                // For non-style elements, use original behavior
-                return originalAppendChild.call(this, node);
-              };
-              
-              // Also intercept insertBefore
-              const originalInsertBefore = HTMLHeadElement.prototype.insertBefore;
-              HTMLHeadElement.prototype.insertBefore = function(node, referenceNode) {
-                if (node && node.tagName === 'STYLE') {
-                  if (shadowRootReady) {
-                    if (injectIntoShadowDOM(node)) {
-                      return node;
-                    }
-                  }
-                  styleQueue.push(node);
-                  return node;
-                }
-                return originalInsertBefore.call(this, node, referenceNode);
-              };
-              
-              // Cleanup interval after 5 seconds
-              setTimeout(() => {
-                if (checkInterval) {
-                  clearInterval(checkInterval);
-                  // Process any remaining styles
-                  processQueue();
-                }
-              }, 5000);
-            })();
-          </script>
-        `;
+<script>
+(function() {
+  'use strict';
+  
+  console.log('🔧 Shadow DOM CSS Interceptor initialized');
+  
+  // Style queue and state
+  const styleQueue = [];
+  let shadowRootReady = false;
+  let processingQueue = false;
+  
+  // Get or wait for Shadow DOM
+  function getShadowRoot() {
+    const shadowHost = document.getElementById('udan-react-root');
+    return shadowHost?.shadowRoot || null;
+  }
+  
+  // Inject style into Shadow DOM
+  function injectIntoShadowDOM(styleElement) {
+    const shadowRoot = getShadowRoot();
+    if (shadowRoot) {
+      console.log('✅ Injecting <style> into Shadow DOM (', styleElement.textContent?.substring(0, 50), '...)');
+      shadowRoot.appendChild(styleElement);
+      return true;
+    }
+    return false;
+  }
+  
+  // Process queued styles
+  function processQueue() {
+    if (processingQueue) return;
+    processingQueue = true;
+    
+    console.log('📋 Processing style queue:', styleQueue.length, 'items');
+    
+    while (styleQueue.length > 0) {
+      const style = styleQueue.shift();
+      if (!injectIntoShadowDOM(style)) {
+        // Put it back if Shadow DOM not ready
+        styleQueue.unshift(style);
+        break;
+      }
+    }
+    
+    processingQueue = false;
+  }
+  
+  // Check for Shadow DOM periodically
+  const checkInterval = setInterval(() => {
+    const shadowRoot = getShadowRoot();
+    if (shadowRoot) {
+      console.log('✅ Shadow DOM detected and ready!');
+      shadowRootReady = true;
+      processQueue();
+      clearInterval(checkInterval);
+    }
+  }, 10);
+  
+  // Store original methods
+  const originalAppendChild = HTMLHeadElement.prototype.appendChild;
+  const originalInsertBefore = HTMLHeadElement.prototype.insertBefore;
+  const originalAppend = HTMLHeadElement.prototype.append;
+  const originalPrepend = HTMLHeadElement.prototype.prepend;
+  
+  // Override appendChild
+  HTMLHeadElement.prototype.appendChild = function(node) {
+    if (node?.nodeType === 1 && node.tagName === 'STYLE') {
+      console.log('🎨 <style> detected (appendChild)');
+      
+      if (shadowRootReady) {
+        if (injectIntoShadowDOM(node)) {
+          return node;
+        }
+      }
+      
+      console.log('⏳ Queuing style (Shadow DOM not ready yet)');
+      styleQueue.push(node);
+      return node;
+    }
+    
+    return originalAppendChild.call(this, node);
+  };
+  
+  // Override insertBefore
+  HTMLHeadElement.prototype.insertBefore = function(node, referenceNode) {
+    if (node?.nodeType === 1 && node.tagName === 'STYLE') {
+      console.log('🎨 <style> detected (insertBefore)');
+      
+      if (shadowRootReady) {
+        if (injectIntoShadowDOM(node)) {
+          return node;
+        }
+      }
+      
+      console.log('⏳ Queuing style (Shadow DOM not ready yet)');
+      styleQueue.push(node);
+      return node;
+    }
+    
+    return originalInsertBefore.call(this, node, referenceNode);
+  };
+  
+  // Override append (Vite dev mode uses this!)
+  if (originalAppend) {
+    HTMLHeadElement.prototype.append = function(...nodes) {
+      const styleNodes = [];
+      const otherNodes = [];
+      
+      nodes.forEach(node => {
+        if (node?.nodeType === 1 && node.tagName === 'STYLE') {
+          console.log('🎨 <style> detected (append) - Vite dev mode');
+          styleNodes.push(node);
+        } else {
+          otherNodes.push(node);
+        }
+      });
+      
+      // Handle style nodes
+      styleNodes.forEach(node => {
+        if (shadowRootReady) {
+          injectIntoShadowDOM(node);
+        } else {
+          console.log('⏳ Queuing style (Shadow DOM not ready yet)');
+          styleQueue.push(node);
+        }
+      });
+      
+      // Handle other nodes normally
+      if (otherNodes.length > 0) {
+        return originalAppend.call(this, ...otherNodes);
+      }
+    };
+  }
+  
+  // Override prepend (just in case)
+  if (originalPrepend) {
+    HTMLHeadElement.prototype.prepend = function(...nodes) {
+      const styleNodes = [];
+      const otherNodes = [];
+      
+      nodes.forEach(node => {
+        if (node?.nodeType === 1 && node.tagName === 'STYLE') {
+          console.log('🎨 <style> detected (prepend)');
+          styleNodes.push(node);
+        } else {
+          otherNodes.push(node);
+        }
+      });
+      
+      // Handle style nodes
+      styleNodes.forEach(node => {
+        if (shadowRootReady) {
+          injectIntoShadowDOM(node);
+        } else {
+          console.log('⏳ Queuing style (Shadow DOM not ready yet)');
+          styleQueue.push(node);
+        }
+      });
+      
+      // Handle other nodes normally
+      if (otherNodes.length > 0) {
+        return originalPrepend.call(this, ...otherNodes);
+      }
+    };
+  }
+  
+  // Cleanup after 10 seconds
+  setTimeout(() => {
+    if (checkInterval) {
+      clearInterval(checkInterval);
+    }
+    
+    // Final queue processing
+    if (styleQueue.length > 0) {
+      console.warn('⚠️  Styles still in queue after 10s:', styleQueue.length);
+      processQueue();
+    }
+  }, 10000);
+  
+  // Debug helper
+  window.__udanDebugStyles__ = function() {
+    const shadowRoot = getShadowRoot();
+    if (!shadowRoot) {
+      console.log('❌ Shadow DOM not found');
+      return;
+    }
+    
+    const styles = shadowRoot.querySelectorAll('style');
+    console.log('📋 Styles in Shadow DOM:', styles.length);
+    styles.forEach((style, i) => {
+      console.log(\`  Style \${i + 1}:\`, style.textContent?.substring(0, 100) + '...');
+    });
+    
+    console.log('📋 Queued styles:', styleQueue.length);
+  };
+})();
+</script>
+`;
         
-        return html.replace('</head>', `${interceptorScript}\n</head>`);
+        return html.replace('</head>', `${interceptorScript}</head>`);
       }
     }
   };
@@ -127,37 +231,75 @@ export default defineConfig({
     shadowDOMCSSInjector()
   ],
   
+  resolve: {
+    extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
+    alias: {
+      'vaul@1.1.2': 'vaul',
+      'sonner@2.0.3': 'sonner',
+      'recharts@2.15.2': 'recharts',
+      'react-resizable-panels@2.1.7': 'react-resizable-panels',
+      'react-hook-form@7.55.0': 'react-hook-form',
+      'react-day-picker@8.10.1': 'react-day-picker',
+      'next-themes@0.4.6': 'next-themes',
+      'lucide-react@0.487.0': 'lucide-react',
+      'input-otp@1.4.2': 'input-otp',
+      'embla-carousel-react@8.6.0': 'embla-carousel-react',
+      'cmdk@1.1.1': 'cmdk',
+      'class-variance-authority@0.7.1': 'class-variance-authority',
+      '@radix-ui/react-tooltip@1.1.8': '@radix-ui/react-tooltip',
+      '@radix-ui/react-toggle@1.1.2': '@radix-ui/react-toggle',
+      '@radix-ui/react-toggle-group@1.1.2': '@radix-ui/react-toggle-group',
+      '@radix-ui/react-tabs@1.1.3': '@radix-ui/react-tabs',
+      '@radix-ui/react-switch@1.1.3': '@radix-ui/react-switch',
+      '@radix-ui/react-slot@1.1.2': '@radix-ui/react-slot',
+      '@radix-ui/react-slider@1.2.3': '@radix-ui/react-slider',
+      '@radix-ui/react-separator@1.1.2': '@radix-ui/react-separator',
+      '@radix-ui/react-select@2.1.6': '@radix-ui/react-select',
+      '@radix-ui/react-scroll-area@1.2.3': '@radix-ui/react-scroll-area',
+      '@radix-ui/react-radio-group@1.2.3': '@radix-ui/react-radio-group',
+      '@radix-ui/react-progress@1.1.2': '@radix-ui/react-progress',
+      '@radix-ui/react-popover@1.1.6': '@radix-ui/react-popover',
+      '@radix-ui/react-navigation-menu@1.2.5': '@radix-ui/react-navigation-menu',
+      '@radix-ui/react-menubar@1.1.6': '@radix-ui/react-menubar',
+      '@radix-ui/react-label@2.1.2': '@radix-ui/react-label',
+      '@radix-ui/react-hover-card@1.1.6': '@radix-ui/react-hover-card',
+      '@radix-ui/react-dropdown-menu@2.1.6': '@radix-ui/react-dropdown-menu',
+      '@radix-ui/react-dialog@1.1.6': '@radix-ui/react-dialog',
+      '@radix-ui/react-context-menu@2.2.6': '@radix-ui/react-context-menu',
+      '@radix-ui/react-collapsible@1.1.3': '@radix-ui/react-collapsible',
+      '@radix-ui/react-checkbox@1.1.4': '@radix-ui/react-checkbox',
+      '@radix-ui/react-avatar@1.1.3': '@radix-ui/react-avatar',
+      '@radix-ui/react-aspect-ratio@1.1.2': '@radix-ui/react-aspect-ratio',
+      '@radix-ui/react-alert-dialog@1.1.6': '@radix-ui/react-alert-dialog',
+      '@radix-ui/react-accordion@1.2.3': '@radix-ui/react-accordion',
+      '@': path.resolve(__dirname, './'),
+    },
+  },
+  
   build: {
-    outDir: 'dist',
-    
-    // CSS configuration
-    cssCodeSplit: false, // Single CSS bundle
+    target: 'esnext',
+    outDir: 'build',
+    cssCodeSplit: false,
     
     rollupOptions: {
       output: {
-        // Single bundle output
         inlineDynamicImports: true,
-        
-        // File naming
         entryFileNames: 'udan-widget.js',
         chunkFileNames: '[name].js',
         assetFileNames: '[name].[ext]'
       }
     },
     
-    // Minification
     minify: 'terser',
     terserOptions: {
       compress: {
-        drop_console: true // Remove console.log in production
+        drop_console: true
       }
     }
   },
   
-  // Resolve configuration
-  resolve: {
-    alias: {
-      // Add any aliases you need
-    }
-  }
+  server: {
+    port: 3000,
+    open: true,
+  },
 });
