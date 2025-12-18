@@ -1,3 +1,6 @@
+import "./index.css";
+import "./styles/globals.css";
+
 import HomePageUser from './components/HomePageUser';
 import { PanelPositionProvider } from './contexts/PanelPositionContext';
 
